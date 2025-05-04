@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Interactive Resume</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f4f9;
+      margin: 0;
+      color: #333;
+    }
+
+    header {
+      background: #4a90e2;
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      padding: 2rem 1rem;
+    }
+
+    section {
+      margin-bottom: 2rem;
+    }
+
+    h2 {
+      border-bottom: 2px solid #4a90e2;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .skills .skill {
+      margin: 0.5rem 0;
+    }
+
+    .skill-bar {
+      background: #ddd;
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+      height: 20px;
+    }
+
+    .skill-bar-fill {
+      background: #4a90e2;
+      height: 100%;
+      width: 0;
+      transition: width 1s ease-in-out;
+    }
+
+    .experience-item {
+      margin-bottom: 1rem;
+      border-left: 4px solid #4a90e2;
+      padding-left: 1rem;
+    }
+
+    .experience-item h4 {
+      cursor: pointer;
+      margin: 0;
+    }
+
+    .experience-details {
+      display: none;
+      margin-top: 0.5rem;
+    }
+
+    .contact a {
+      color: #4a90e2;
+      text-decoration: none;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #888;
+      padding: 2rem 1rem;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Jane Doe</h1>
+    <p>Web Developer & Designer</p>
+  </header>
+
+  <div class="container">
+
+    <section class="about">
+      <h2>About Me</h2>
+      <p>I’m a passionate web developer with a love for creating clean, interactive, and user-friendly experiences. I specialize in frontend technologies and enjoy bringing ideas to life in the browser.</p>
+    </section>
+
+    <section class="skills">
+      <h2>Skills</h2>
+      <div class="skill">
+        <label>HTML/CSS</label>
+        <div class="skill-bar"><div class="skill-bar-fill" style="width: 90%"></div></div>
+      </div>
+      <div class="skill">
+        <label>JavaScript</label>
+        <div class="skill-bar"><div class="skill-bar-fill" style="width: 85%"></div></div>
+      </div>
+      <div class="skill">
+        <label>React</label>
+        <div class="skill-bar"><div class="skill-bar-fill" style="width: 75%"></div></div>
+      </div>
+      <div class="skill">
+        <label>UI/UX Design</label>
+        <div class="skill-bar"><div class="skill-bar-fill" style="width: 70%"></div></div>
+      </div>
+    </section>
+
+    <section class="experience">
+      <h2>Experience</h2>
+      <div class="experience-item">
+        <h4 onclick="toggleDetails(this)">Frontend Developer – ABC Corp (2021–Present)</h4>
+        <div class="experience-details">
+          <p>Led the frontend team in building dynamic web applications using React and TypeScript. Enhanced performance and accessibility across platforms.</p>
+        </div>
+      </div>
+      <div class="experience-item">
+        <h4 onclick="toggleDetails(this)">Web Designer – XYZ Studios (2019–2021)</h4>
+        <div class="experience-details">
+          <p>Designed modern UI/UX for client websites and collaborated with developers to implement responsive designs.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="education">
+      <h2>Education</h2>
+      <p><strong>BSc in Computer Science</strong>, University of Somewhere – 2015–2019</p>
+    </section>
+
+    <section class="contact">
+      <h2>Contact</h2>
+      <p>Email: <a href="mailto:jane.doe@example.com">jane.doe@example.com</a></p>
+      <p>LinkedIn: <a href="https://linkedin.com/in/janedoe" target="_blank">linkedin.com/in/janedoe</a></p>
+    </section>
+  </div>
+
+  <footer>
+    &copy; 2025 Jane Doe. All rights reserved.
+  </footer>
+
+  <script>
+    function toggleDetails(header) {
+      const details = header.nextElementSibling;
+      details.style.display = details.style.display === 'block' ? 'none' : 'block';
+    }
+
+    // Animate skill bars on load
+    window.addEventListener("load", () => {
+      document.querySelectorAll(".skill-bar-fill").forEach(bar => {
+        const width = bar.style.width;
+        bar.style.width = "0";
+        setTimeout(() => bar.style.width = width, 100);
+      });
+    });
+  </script>
+</body>
+</html>
