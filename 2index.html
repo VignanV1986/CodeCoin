@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>162 Hz Indian Meditation</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Segoe UI', sans-serif;
+      color: white;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 100vh;
+      backdrop-filter: blur(4px);
+    }
+
+    h1 {
+      font-weight: 300;
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      margin: 0 20px 1.5rem;
+      font-size: 1.1rem;
+    }
+
+    .controls {
+      margin-top: 1rem;
+    }
+
+    button {
+      padding: 12px 25px;
+      margin: 10px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      background-color: rgba(255, 255, 255, 0.2);
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: rgba(255, 255, 255, 0.4);
+    }
+
+    footer {
+      position: absolute;
+      bottom: 10px;
+      width: 100%;
+      font-size: 0.8rem;
+      color: #ddd;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>162 Hz Deep Meditation</h1>
+  <p>Calm your mind with 162 Hz frequencies and the serene sound of Indian flute.</p>
+
+  <div class="controls">
+    <button onclick="startMeditation()">Start Meditation</button>
+    <button onclick="stopMeditation()">Stop Meditation</button>
+  </div>
+
+  <footer>© 2025 Sacred Sounds | Best experienced with headphones</footer>
+
+  <!-- Replace with your own hosted files -->
+  <audio id="hzTone" src="C:\Users\Vignan\Documents\one-minute-meditation\StockTune-Echoes From The Ganges_1746361854.mp3" loop></audio>
+  <audio id="indianFlute" src="C:\Users\Vignan\Documents\one-minute-meditation\StockTune-Echoes From The Ganges_1746361854.mp3" loop></audio>
+  <!-- Optional: <audio id="guidedVoice" src="https://example.com/guided.mp3" loop></audio> -->
+
+  <script>
+    const hzTone = document.getElementById('hzTone');
+    const flute = document.getElementById('indianFlute');
+    // const guide = document.getElementById('guidedVoice'); // if needed
+
+    function startMeditation() {
+      hzTone.volume = 0.3;
+      flute.volume = 0.5;
+      hzTone.play();
+      flute.play();
+      // guide.play(); // optional
+    }
+
+    function stopMeditation() {
+      hzTone.pause();
+      hzTone.currentTime = 0;
+      flute.pause();
+      flute.currentTime = 0;
+      // guide.pause(); guide.currentTime = 0;
+    }
+  </script>
+</body>
+</html>
