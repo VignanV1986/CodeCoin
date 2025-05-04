@@ -2,245 +2,109 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>One-Minute Meditation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>162 Hz Deep Meditation</title>
   <style>
-    :root {
-      --bg: #2c5364;
-      --fg: white;
-    }
-
     body {
       margin: 0;
+      background: linear-gradient(to bottom, #1e1e1e, #2b2b2b);
+      color: white;
       font-family: 'Segoe UI', sans-serif;
-      background: var(--bg);
-      color: var(--fg);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       height: 100vh;
       text-align: center;
-      transition: background 0.3s, color 0.3s;
-    }
-
-    .circle {
-      width: 180px;
-      height: 180px;
-      border-radius: 50%;
-      border: 3px solid var(--fg);
-      animation: breathe 12s infinite;
-    }
-
-    @keyframes breathe {
-      0% { transform: scale(1); }
-      25% { transform: scale(1.3); }
-      50% { transform: scale(1.3); }
-      75% { transform: scale(1); }
     }
 
     h1 {
-      margin-top: 20px;
       font-weight: 300;
+      margin-bottom: 10px;
     }
 
-    #instruction {
-      font-size: 1.4rem;
-      margin: 12px 0;
+    p {
+      max-width: 500px;
+      margin-bottom: 30px;
+      font-size: 1.1rem;
     }
 
-    #timer {
-      font-size: 2rem;
-      margin: 10px 0;
-    }
-
-    .settings {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-      margin: 20px 0;
-    }
-
-    button, select, input {
-      padding: 10px;
-      font-size: 1rem;
+    button {
+      background: #444;
+      color: white;
       border: none;
-      border-radius: 5px;
-      background: rgba(255,255,255,0.2);
-      color: var(--fg);
+      padding: 12px 25px;
+      font-size: 1rem;
+      border-radius: 8px;
       cursor: pointer;
+      margin: 10px;
     }
 
-    button:hover, select:hover {
-      background: rgba(255,255,255,0.3);
+    button:hover {
+      background: #666;
+    }
+
+    footer {
+      position: absolute;
+      bottom: 15px;
+      font-size: 0.9rem;
+      color: #bbb;
     }
   </style>
 </head>
 <body>
 
-  <div class="circle"></div>
-  <h1>One-Minute Meditation</h1>
-  <div id="instruction">Ready to begin</div>
-  <div id="timer">60</div>
+  <h1>162 Hz Deep Meditation</h1>
+  <p>Experience a deep meditative state with 162 Hz healing frequencies and soothing Indian flute music.</p>
 
-  <div class="settings">
-    <select id="duration">
-      <option value="60">1 Minute</option>
-      <option value="180">3 Minutes</option>
-      <option value="300">5 Minutes</option>
-      <option value="600">10 Minutes</option>
-    </select>
+  <button onclick="startMeditation()">Start Meditation</button>
+  <button onclick="stopMeditation()">Stop Meditation</button>
 
-    <select id="voiceSelect">
-      <option>Loading voices...</option>
-    </select>
+  <footer>© 2025 Deep Sound Meditation</footer>
 
-    <button onclick="toggleTheme()">Toggle Theme</button>
-    <button onclick="toggleMusic()">Music: On</button>
-    <button onclick="startMeditation()">Start</button>
-  </div>
-
-  <div class="settings">
-    <input type="time" id="reminderTime">
-    <button onclick="setReminder()">Set Daily Reminder</button>
-  </div>
-
-  <audio id="ambient-sound" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop></audio>
+  <audio id="fluteMusic" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3" loop></audio>
 
   <script>
-    const timerDisplay = document.getElementById('timer');
-    const instruction = document.getElementById('instruction');
-    const audio = document.getElementById('ambient-sound');
-    const durationSelect = document.getElementById('duration');
-    const voiceSelect = document.getElementById('voiceSelect');
-    const reminderInput = document.getElementById('reminderTime');
-
-    let voices = [];
-    let selectedVoice;
-    let countdown;
-    let musicOn = true;
-    let reminderTimeout;
-
-    const synth = window.speechSynthesis;
-
-    function populateVoices() {
-      voices = synth.getVoices();
-      voiceSelect.innerHTML = '';
-      voices.forEach((voice, index) => {
-        const option = document.createElement('option');
-        option.value = index;
-        option.textContent = `${voice.name} (${voice.lang}) ${voice.default ? ' — Default' : ''}`;
-        voiceSelect.appendChild(option);
-      });
-      selectedVoice = voices[voiceSelect.value || 0];
-    }
-
-    synth.onvoiceschanged = populateVoices;
-
-    function speak(text) {
-      const utter = new SpeechSynthesisUtterance(text);
-      selectedVoice = voices[voiceSelect.value] || synth.getVoices()[0];
-      utter.voice = selectedVoice;
-      utter.rate = 1;
-      synth.speak(utter);
-    }
-
-    function toggleTheme() {
-      const dark = getComputedStyle(document.body).getPropertyValue('--bg') === '#2c5364';
-      document.body.style.setProperty('--bg', dark ? '#f5f5f5' : '#2c5364');
-      document.body.style.setProperty('--fg', dark ? '#111' : 'white');
-    }
-
-    function toggleMusic() {
-      musicOn = !musicOn;
-      audio[musicOn ? 'play' : 'pause']();
-      event.target.textContent = `Music: ${musicOn ? 'On' : 'Off'}`;
-    }
+    let audioCtx;
+    let oscillator;
+    let gainNode;
+    const fluteAudio = document.getElementById('fluteMusic');
 
     function startMeditation() {
-      clearInterval(countdown);
-      synth.cancel();
-      if (musicOn) audio.play();
-      let secondsLeft = parseInt(durationSelect.value);
-      let phaseIndex = 0;
-      const phases = [
-        { label: "Breathe In", duration: 4 },
-        { label: "Hold", duration: 4 },
-        { label: "Breathe Out", duration: 4 },
-        { label: "Hold", duration: 4 }
-      ];
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        oscillator = audioCtx.createOscillator();
+        gainNode = audioCtx.createGain();
 
-      timerDisplay.textContent = secondsLeft;
-      instruction.textContent = "Starting...";
-      speak("Starting meditation");
+        oscillator.type = 'sine';
+        oscillator.frequency.setValueAtTime(162, audioCtx.currentTime); // 162 Hz tone
 
-      setTimeout(() => {
-        runCycle();
-        countdown = setInterval(() => {
-          secondsLeft--;
-          timerDisplay.textContent = secondsLeft;
-          if (secondsLeft <= 0) {
-            clearInterval(countdown);
-            audio.pause();
-            speak("Meditation complete.");
-            instruction.textContent = "Done. Namaste.";
-          }
-        }, 1000);
-      }, 1500);
+        // Smooth fade in
+        gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+        gainNode.gain.linearRampToValueAtTime(0.1, audioCtx.currentTime + 3); // Fade in over 3 seconds
 
-      function runCycle() {
-        if (secondsLeft <= 0) return;
-        const phase = phases[phaseIndex % phases.length];
-        instruction.textContent = phase.label;
-        speak(phase.label);
-        phaseIndex++;
-        setTimeout(runCycle, phase.duration * 1000);
+        oscillator.connect(gainNode).connect(audioCtx.destination);
+        oscillator.start();
       }
+
+      fluteAudio.volume = 0.5;
+      fluteAudio.play();
     }
 
-    function setReminder() {
-      const time = reminderInput.value;
-      if (!time) return alert("Select a time first");
-      localStorage.setItem('reminderTime', time);
-      Notification.requestPermission().then(permission => {
-        if (permission !== 'granted') {
-          alert("Notifications blocked.");
-          return;
-        }
-        scheduleReminder(time);
-        alert(`Daily reminder set for ${time}`);
-      });
-    }
-
-    function scheduleReminder(timeStr) {
-      const [hour, minute] = timeStr.split(':').map(Number);
-      const now = new Date();
-      const next = new Date();
-      next.setHours(hour, minute, 0, 0);
-      if (next < now) next.setDate(next.getDate() + 1);
-      const delay = next - now;
-
-      clearTimeout(reminderTimeout);
-      reminderTimeout = setTimeout(() => {
-        new Notification("Time to Meditate", {
-          body: "Click to begin a moment of peace.",
-        });
-        scheduleReminder(timeStr); // re-schedule for next day
-      }, delay);
-    }
-
-    // Load reminder
-    window.addEventListener('load', () => {
-      populateVoices();
-      const savedTime = localStorage.getItem('reminderTime');
-      if (savedTime) {
-        reminderInput.value = savedTime;
-        scheduleReminder(savedTime);
+    function stopMeditation() {
+      if (oscillator) {
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2); // Fade out
+        setTimeout(() => {
+          oscillator.stop();
+          oscillator.disconnect();
+          audioCtx.close();
+          audioCtx = null;
+        }, 2000);
       }
-    });
 
+      fluteAudio.pause();
+      fluteAudio.currentTime = 0;
+    }
   </script>
-
 </body>
 </html>
