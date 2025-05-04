@@ -1,109 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>162 Hz Deep Meditation</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>162 Hz Indian Meditation</title>
   <style>
     body {
       margin: 0;
-      background: linear-gradient(to bottom, #1e1e1e, #2b2b2b);
-      color: white;
+      padding: 0;
+      background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+      background-size: cover;
       font-family: 'Segoe UI', sans-serif;
+      color: white;
+      text-align: center;
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: center;
       height: 100vh;
-      text-align: center;
+      backdrop-filter: blur(4px);
     }
 
     h1 {
       font-weight: 300;
-      margin-bottom: 10px;
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
     }
 
     p {
-      max-width: 500px;
-      margin-bottom: 30px;
+      margin: 0 20px 1.5rem;
       font-size: 1.1rem;
     }
 
+    .controls {
+      margin-top: 1rem;
+    }
+
     button {
-      background: #444;
-      color: white;
-      border: none;
       padding: 12px 25px;
-      font-size: 1rem;
-      border-radius: 8px;
-      cursor: pointer;
       margin: 10px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      background-color: rgba(255, 255, 255, 0.2);
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s ease;
     }
 
     button:hover {
-      background: #666;
+      background-color: rgba(255, 255, 255, 0.4);
     }
 
     footer {
       position: absolute;
-      bottom: 15px;
-      font-size: 0.9rem;
-      color: #bbb;
+      bottom: 10px;
+      width: 100%;
+      font-size: 0.8rem;
+      color: #ddd;
     }
   </style>
 </head>
 <body>
 
   <h1>162 Hz Deep Meditation</h1>
-  <p>Experience a deep meditative state with 162 Hz healing frequencies and soothing Indian flute music.</p>
+  <p>Calm your mind with 162 Hz frequencies and the serene sound of Indian flute.</p>
 
-  <button onclick="startMeditation()">Start Meditation</button>
-  <button onclick="stopMeditation()">Stop Meditation</button>
+  <div class="controls">
+    <button onclick="startMeditation()">Start Meditation</button>
+    <button onclick="stopMeditation()">Stop Meditation</button>
+  </div>
 
-  <footer>© 2025 Deep Sound Meditation</footer>
+  <footer>© 2025 Sacred Sounds | Best experienced with headphones</footer>
 
-  <audio id="fluteMusic" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3" loop></audio>
+  <!-- Replace with your own hosted files -->
+  <audio id="hzTone" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-16.mp3" loop></audio>
+  <audio id="indianFlute" src="https://pixabay.com/music/world-relaxing-krishna-flute-music-deep-sleep-relaxing-music-292793/" loop></audio>
+  <!-- Optional: <audio id="guidedVoice" src="https://example.com/guided.mp3" loop></audio> -->
 
   <script>
-    let audioCtx;
-    let oscillator;
-    let gainNode;
-    const fluteAudio = document.getElementById('fluteMusic');
+    const hzTone = document.getElementById('hzTone');
+    const flute = document.getElementById('indianFlute');
+    // const guide = document.getElementById('guidedVoice'); // if needed
 
     function startMeditation() {
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        oscillator = audioCtx.createOscillator();
-        gainNode = audioCtx.createGain();
-
-        oscillator.type = 'sine';
-        oscillator.frequency.setValueAtTime(162, audioCtx.currentTime); // 162 Hz tone
-
-        // Smooth fade in
-        gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
-        gainNode.gain.linearRampToValueAtTime(0.1, audioCtx.currentTime + 3); // Fade in over 3 seconds
-
-        oscillator.connect(gainNode).connect(audioCtx.destination);
-        oscillator.start();
-      }
-
-      fluteAudio.volume = 0.5;
-      fluteAudio.play();
+      hzTone.volume = 0.3;
+      flute.volume = 0.5;
+      hzTone.play();
+      flute.play();
+      // guide.play(); // optional
     }
 
     function stopMeditation() {
-      if (oscillator) {
-        gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2); // Fade out
-        setTimeout(() => {
-          oscillator.stop();
-          oscillator.disconnect();
-          audioCtx.close();
-          audioCtx = null;
-        }, 2000);
-      }
-
-      fluteAudio.pause();
-      fluteAudio.currentTime = 0;
+      hzTone.pause();
+      hzTone.currentTime = 0;
+      flute.pause();
+      flute.currentTime = 0;
+      // guide.pause(); guide.currentTime = 0;
     }
   </script>
 </body>
