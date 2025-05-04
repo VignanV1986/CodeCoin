@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>162 Hz Deep Meditation</title>
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(to bottom, #1e1e1e, #2b2b2b);
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    h1 {
+      font-weight: 300;
+      margin-bottom: 10px;
+    }
+
+    p {
+      max-width: 500px;
+      margin-bottom: 30px;
+      font-size: 1.1rem;
+    }
+
+    button {
+      background: #444;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 10px;
+    }
+
+    button:hover {
+      background: #666;
+    }
+
+    footer {
+      position: absolute;
+      bottom: 15px;
+      font-size: 0.9rem;
+      color: #bbb;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>162 Hz Deep Meditation</h1>
+  <p>Experience a deep meditative state with 162 Hz healing frequencies and soothing Indian flute music.</p>
+
+  <button onclick="startMeditation()">Start Meditation</button>
+  <button onclick="stopMeditation()">Stop Meditation</button>
+
+  <footer>© 2025 Deep Sound Meditation</footer>
+
+  <audio id="fluteMusic" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3" loop></audio>
+
+  <script>
+    let audioCtx;
+    let oscillator;
+    let gainNode;
+    const fluteAudio = document.getElementById('fluteMusic');
+
+    function startMeditation() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        oscillator = audioCtx.createOscillator();
+        gainNode = audioCtx.createGain();
+
+        oscillator.type = 'sine';
+        oscillator.frequency.setValueAtTime(162, audioCtx.currentTime); // 162 Hz tone
+
+        // Smooth fade in
+        gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+        gainNode.gain.linearRampToValueAtTime(0.1, audioCtx.currentTime + 3); // Fade in over 3 seconds
+
+        oscillator.connect(gainNode).connect(audioCtx.destination);
+        oscillator.start();
+      }
+
+      fluteAudio.volume = 0.5;
+      fluteAudio.play();
+    }
+
+    function stopMeditation() {
+      if (oscillator) {
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2); // Fade out
+        setTimeout(() => {
+          oscillator.stop();
+          oscillator.disconnect();
+          audioCtx.close();
+          audioCtx = null;
+        }, 2000);
+      }
+
+      fluteAudio.pause();
+      fluteAudio.currentTime = 0;
+    }
+  </script>
+</body>
+</html>
